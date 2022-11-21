@@ -1,0 +1,46 @@
+#board{
+   width: 800px;
+   height: 800px;
+   border: 1px solid black;
+   margin: auto;
+
+   display: flex;
+   flex-wrap: wrap;
+
+   margin-top: 50px;
+}
+
+#board tr{
+   width: 100%;
+   height: calc(100% / 8);
+   display: flex;
+   flex-wrap: wrap;
+}
+
+#board tr td{
+   position:relative;
+   width: calc(100% / 8);
+   height: 100%;
+}
+
+#board .figure{
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+   font-size: 96px;
+
+   cursor: pointer;
+}
+
+#board tr:nth-child(odd) td:nth-child(even) {
+	background: #ccc;
+}
+
+#board tr:nth-child(even) td:nth-child(odd) {
+	background: #ccc;
+}
+
+.active, .help{
+   background-color: lightgreen !important;
+}
