@@ -5,8 +5,10 @@ class Board {
       this.selectedField = null;
 
       this.round = 0;
-      this.queue = ['white', 'black'];
-      this.enPassant = null;
+      this.queue = ['white', 'black']
+
+      Board.enPassant = null;
+      Board.clearEnPassant = false;
    }
 
    getPlayer() {
@@ -30,7 +32,7 @@ class Board {
    placeFigures() {
       // BLACK
       for (var i = 0; i < 8; i++) {
-         // this.findField(2, i + 1).setFigure(new Pawn('black'));
+         this.findField(2, i + 1).setFigure(new Pawn('black'));
       }
 
       this.findField(1, 1).setFigure(new Rock('black'));
@@ -47,7 +49,7 @@ class Board {
 
       // WHITE
       for (var i = 0; i < 8; i++) {
-         // this.findField(7, i + 1).setFigure(new Pawn('white'));
+         this.findField(7, i + 1).setFigure(new Pawn('white'));
       }
 
       this.findField(8, 1).setFigure(new Rock('white'));
@@ -82,43 +84,51 @@ class Board {
          let field = this.fields[i];
 
          field.wrapper.addEventListener('click', () => {
-            // console.log(field.position.getVector());
-            // Jeżeli została zaznaczona jakaś figura
             if (this.selectedField != null) {
-               // Odznaczenie figury
-               if (this.selectedField == field) {
-                  this.selectedField.select();
-                  this.selectedField = null;
-                  return 0;
-               }
+               if (this.selectedField == field) return this.uncheck();
 
-               // Przenieś figurę na wskazaną pozycję
-               // Metoda move sprawdza czy możemy się ruszyć na dene pole
-               if (this.selectedField.figure.move(this.selectedField, field)) {
-                  field.setFigure(this.selectedField.figure)
-                  this.selectedField.select();
-                  this.selectedField.clearFigure(null);
-                  this.selectedField = null;
-                  this.round++;
-                  this.hideAvaiableMoves();
+               if (this.selectedField.figure.canMoveToField(this.selectedField, field)) {
+                  this.checkEnPassant(field);
+                  this.moveFigureTo(field);
                }
 
                return 0;
             }
 
             if (field.figure == null) return 0;
-
-            // Zaznacz pole z figurą
-            if (field.figure.color == this.getPlayer() && field.select()) {
-               this.selectedField = field;
-            }
+            if (field.figure.color == this.getPlayer() && field.select()) this.selectedField = field;
          })
       }
    }
 
-   hideAvaiableMoves() {
+   moveFigureTo(field) {
+      field.setFigure(this.selectedField.figure)
+      this.selectedField.select();
+      this.selectedField.clearFigure(null);
+      this.selectedField = null;
+      this.round++;
+
       this.fields.forEach(field => {
          field.removeClassHelp();
       });
+   }
+
+   uncheck() {
+      this.selectedField.select();
+      this.selectedField = null;
+      return 0;
+   }
+
+   checkEnPassant(field) {
+      if (Board.enPassant != null) {
+         if (Board.clearEnPassant == true) {
+            Board.enPassant = null;
+            Board.clearEnPassant = false;
+         }
+         else {
+            Board.enPassant = field;
+            Board.clearEnPassant = true;
+         }
+      }
    }
 }
