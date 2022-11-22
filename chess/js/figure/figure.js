@@ -51,4 +51,10 @@ class Figure {
          if (this.move(from, field)) field.toggleClassHelp();
       });
    }
+
+   checkTarget(to) {
+      if (to.figure != null && to.figure.color != this.color) return true;
+      else if (to.figure == null) return true;
+      else return false;
+   }
 }

@@ -5,6 +5,8 @@ class Knight extends Figure {
    }
    // from,to: object of class field 
    move(from, to) {
+      if (this.checkTarget(to) == false) return false;
+
       var status = false;
       var vectors = [
          [2, 1], [2, -1], [-2, 1], [-2, -1], // x = +-2 | y = +-1
@@ -13,15 +15,7 @@ class Knight extends Figure {
 
       vectors.forEach(vector => {
          let field = Figure.board.findField(from.position.x + vector[0], from.position.y + vector[1]);
-
-         if (field != null && field == to) {
-            if (to.figure == null) {
-               status = true;
-            }
-            else if (to.figure.color != this.color) {
-               status = true;
-            }
-         }
+         if (field != null && field == to) status = true;
       });
 
       return status;

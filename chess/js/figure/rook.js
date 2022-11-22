@@ -5,14 +5,7 @@ class Rock extends Figure {
    }
    // from,to: object of class field 
    move(from, to) {
-      if (from.position.x == to.position.x || from.position.y == to.position.y) {
-         if (this.simpleColider(from.position, to.position)) {
-            if (to.figure == null) return true;
-            if (to.figure.color != this.color) return true;
-         }
-         // return false;
-      }
-
-      return false;
+      if (this.checkTarget(to) == false) return false;
+      return (this.simpleColider(from.position, to.position))
    }
 }

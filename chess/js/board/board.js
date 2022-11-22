@@ -30,7 +30,7 @@ class Board {
    placeFigures() {
       // BLACK
       for (var i = 0; i < 8; i++) {
-         this.findField(2, i + 1).setFigure(new Pawn('black'));
+         // this.findField(2, i + 1).setFigure(new Pawn('black'));
       }
 
       this.findField(1, 1).setFigure(new Rock('black'));
@@ -42,9 +42,11 @@ class Board {
       this.findField(1, 2).setFigure(new Knight('black'));
       this.findField(1, 7).setFigure(new Knight('black'));
 
+      this.findField(1, 4).setFigure(new Queen('black'));
+
       // WHITE
       for (var i = 0; i < 8; i++) {
-         this.findField(7, i + 1).setFigure(new Pawn('white'));
+         // this.findField(7, i + 1).setFigure(new Pawn('white'));
       }
 
       this.findField(8, 1).setFigure(new Rock('white'));
@@ -55,6 +57,8 @@ class Board {
 
       this.findField(8, 2).setFigure(new Knight('white'));
       this.findField(8, 7).setFigure(new Knight('white'));
+
+      this.findField(8, 4).setFigure(new Queen('white'));
    }
 
    findField(x, y) {

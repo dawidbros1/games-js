@@ -5,11 +5,7 @@ class Bishop extends Figure {
    }
    // from,to: object of class field 
    move(from, to) {
-      if (this.obliqueColider(from.position, to.position) == false) {
-         return false;
-      }
-
-      if (to.figure == null) return true;
-      return (to.figure.color != this.color);
+      if (this.checkTarget(to) == false) return false;
+      return this.obliqueColider(from.position, to.position);
    }
 }
