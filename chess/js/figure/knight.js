@@ -3,8 +3,9 @@ class Knight extends Figure {
       super(color);
       this.shape = this.color == "white" ? "&#9816;" : "&#9822;"
    }
+
    // from,to: object of class field 
-   move(from, to) {
+   canMove(from, to) {
       if (this.checkTarget(to) == false) return false;
 
       var status = false;

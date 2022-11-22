@@ -45,16 +45,20 @@ class Figure {
       return true;
    }
 
-   // from as field
-   help(from) {
-      Figure.board.fields.forEach(field => {
-         if (this.move(from, field)) field.toggleClassHelp();
-      });
-   }
-
    checkTarget(to) {
       if (to.figure != null && to.figure.color != this.color) return true;
       else if (to.figure == null) return true;
       else return false;
    }
+
+   canMoveToField(from, to) {
+      return this.canMove(from, to, false);
+   }
+
+   showAvaiableMoves(from) {
+      Figure.board.fields.forEach(field => {
+         if (this.canMove(from, field, true)) field.toggleClassHelp();
+      });
+   }
+
 }

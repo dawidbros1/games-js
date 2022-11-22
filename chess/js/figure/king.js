@@ -4,7 +4,7 @@ class King extends Figure {
       this.shape = this.color == "white" ? "&#9812;" : "&#9818;"
    }
 
-   move(from, to) {
+   canMove(from, to) {
       if (this.checkTarget(to) == false) return false;
       var dx = Math.abs(from.position.x - to.position.x);
       var dy = Math.abs(from.position.y - to.position.y);

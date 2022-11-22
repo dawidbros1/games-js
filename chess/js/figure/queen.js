@@ -5,7 +5,7 @@ class Queen extends Figure {
    }
    // from,to: object of class field 
 
-   move(from, to) {
+   canMove(from, to) {
       if (this.checkTarget(to) == false) return false;
       if (this.simpleColider(from.position, to.position)) return true
       return this.obliqueColider(from.position, to.position)

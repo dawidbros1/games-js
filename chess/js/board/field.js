@@ -29,7 +29,7 @@ class Field {
    select() {
       if (this.figure != null) {
          this.wrapper.classList.toggle('active')
-         this.figure.help(this);
+         this.figure.showAvaiableMoves(this);
       }
 
       return this.figure != null;

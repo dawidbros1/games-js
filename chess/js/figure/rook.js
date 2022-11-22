@@ -4,7 +4,7 @@ class Rock extends Figure {
       this.shape = this.color == "white" ? "&#9814;" : "&#9820;"
    }
    // from,to: object of class field 
-   move(from, to) {
+   canMove(from, to) {
       if (this.checkTarget(to) == false) return false;
       return (this.simpleColider(from.position, to.position))
    }
