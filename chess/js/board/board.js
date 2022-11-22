@@ -43,6 +43,7 @@ class Board {
       this.findField(1, 7).setFigure(new Knight('black'));
 
       this.findField(1, 4).setFigure(new Queen('black'));
+      this.findField(1, 5).setFigure(new King('black'));
 
       // WHITE
       for (var i = 0; i < 8; i++) {
@@ -59,6 +60,7 @@ class Board {
       this.findField(8, 7).setFigure(new Knight('white'));
 
       this.findField(8, 4).setFigure(new Queen('white'));
+      this.findField(8, 5).setFigure(new King('white'));
    }
 
    findField(x, y) {
