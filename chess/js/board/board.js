@@ -9,10 +9,16 @@ class Board {
 
       Board.enPassant = null;
       Board.clearEnPassant = false;
+
+      this.avaiableFigures = { Pawn, Rock, Bishop, Knight, King, Queen }
    }
 
    getPlayer() {
       return this.queue[this.round % 2];
+   }
+
+   getNextPlayer() {
+      return this.queue[(this.round + 1) % 2];
    }
 
    generate() {
@@ -32,7 +38,7 @@ class Board {
    placeFigures() {
       // BLACK
       for (var i = 0; i < 8; i++) {
-         this.findField(2, i + 1).setFigure(new Pawn('black'));
+         // this.findField(2, i + 1).setFigure(new Pawn('black'));
       }
 
       this.findField(1, 1).setFigure(new Rock('black'));
@@ -49,7 +55,7 @@ class Board {
 
       // WHITE
       for (var i = 0; i < 8; i++) {
-         this.findField(7, i + 1).setFigure(new Pawn('white'));
+         // this.findField(7, i + 1).setFigure(new Pawn('white'));
       }
 
       this.findField(8, 1).setFigure(new Rock('white'));
@@ -88,8 +94,8 @@ class Board {
                if (this.selectedField == field) return this.uncheck();
 
                if (this.selectedField.figure.canMoveToField(this.selectedField, field)) {
-                  this.checkEnPassant(field);
                   this.moveFigureTo(field);
+                  this.checkEnPassant(field);
                }
 
                return 0;
@@ -102,15 +108,37 @@ class Board {
    }
 
    moveFigureTo(field) {
+      let selectedType = this.selectedField.figure == null ? null : this.selectedField.figure.constructor.name;
+      // let toFigure = field.figure == null ? null : Object.assign({}, field.figure);
+      let targetType = field.figure == null ? null : field.figure.constructor.name;
+
       field.setFigure(this.selectedField.figure)
+
       this.selectedField.select();
       this.selectedField.clearFigure(null);
-      this.selectedField = null;
-      this.round++;
 
       this.fields.forEach(field => {
          field.removeClassHelp();
       });
+
+      // Jeżeli po wykonaniu ruchu mój król będzie zagrożony to nie pozwól na wykonaniu ruchu
+      if (this.kingIsInDanger()) {
+         this.selectedField.setFigure(new this.avaiableFigures[selectedType](this.getPlayer()));
+
+         if (targetType != null) { field.setFigure(new this.avaiableFigures[targetType](this.getNextPlayer())); }
+         else field.clearFigure();
+
+         this.selectedField = null;
+         return 0;
+      }
+
+      this.selectedField = null;
+      this.round++;
+
+      if (this.kingIsInDanger()) {
+         // Czy jest możliwość ucieczki => Jak nie to koniec gry
+         // Poinformuj gracza
+      }
    }
 
    uncheck() {
@@ -130,5 +158,43 @@ class Board {
             Board.clearEnPassant = true;
          }
       }
+   }
+
+   kingIsInDanger() {
+      var color = this.getPlayer(); // get color of current player
+
+      // Pobierz swojego króla
+      var fieldOfKing = null;
+
+      this.fields.forEach(field => {
+         if (field.figure != null && field.figure.constructor.name == "King" && field.figure.color == color) {
+            fieldOfKing = field;
+         }
+      });
+
+      var fields = this.getFieldsByColor(this.getNextPlayer())
+      var status = false;
+
+
+      fields.forEach(field => {
+         if (field.figure.canMoveToField(field, fieldOfKing)) {
+            console.log("INFO [SZACH]: " + color + " król jest zagroszony");
+            status = true;
+         }
+      });
+
+      return status;
+   }
+
+   getFieldsByColor(color) {
+      var output = [];
+
+      this.fields.forEach(field => {
+         if (field.figure != null && field.figure.color == color) {
+            output.push(field);
+         }
+      });
+
+      return output;
    }
 }
